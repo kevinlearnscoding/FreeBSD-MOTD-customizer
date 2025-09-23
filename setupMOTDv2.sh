@@ -13,11 +13,11 @@ trap 'error_exit' EXIT
 
 # ===== USER INPUT FOR BANNER TEXT =====
 echo "Enter your banner text: "
-read banner_text
+read banner_text </dev/tty
 
 # ===== USER INPUT FOR WEATHER =====
 echo "Enter your city name or 3-letter airport code (e.g. New York or JFK):"
-read city_input
+read city_input </dev/tty
 
 # Replace spaces with '+'
 city_url=$(echo "$city_input" | tr ' ' '+')
@@ -25,7 +25,7 @@ city_url=$(echo "$city_input" | tr ' ' '+')
 # Prompt for units
 while true; do
     echo "Do you want the temperature in Fahrenheit or Celsius? (F/C)"
-    read unit
+    read unit </dev/tty
     unit=$(echo "$unit" | tr '[:lower:]' '[:upper:]')
     if [ "$unit" = "F" ]; then
         unit_suffix="&u"
@@ -117,7 +117,7 @@ if has_cmd figlet; then
 else
     echo "\$NAME" | colorize
 fi
-
+echo ""
 echo "Font used: \$FONT"
 divider | colorize
 echo " 🖥️  Hostname : \$(hostname)"
@@ -126,9 +126,8 @@ echo " 🧠 Memory    : \$(get_mem_info)"
 
 DISK=\$(df -h / | awk 'NR==2 {print \$3 " used / " \$2}')
 echo " 💽 Disk      : \$DISK"
-echo
+
 divider | colorize
-echo
 if has_cmd curl; then
     echo
     echo " 🌦️  Weather:"
