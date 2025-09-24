@@ -2,7 +2,7 @@
 
 [![](https://img.shields.io/badge/FreeBSD-13.0%2B-red.svg)](https://www.freebsd.org/) 
 [![](https://img.shields.io/badge/Installer-Script-green.svg)](#installation) 
-[![](https://img.shields.io/github/license/kevinlearnscoding/FreeBSD_dynamic_MOTD_installer)](LICENSE)  
+[![](https://img.shields.io/github/license/kevinlearnscoding/FreeBSD_dynamic_MOTD_installer)]  
 
 This project is an **installer and setup helper** for the excellent [`dynamic_motd`](https://github.com/sstallion/dynamic_motd) project by [sstallion](https://github.com/sstallion).  
 It automates installation, configures fonts, adds live weather, and ensures you get a rich and dynamic login experience out of the box.  
