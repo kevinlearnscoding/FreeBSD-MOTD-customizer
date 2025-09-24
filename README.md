@@ -24,7 +24,7 @@ It automates installation, configures fonts, adds live weather, and ensures you 
 
 - Automated installer for [`dynamic_motd`](https://github.com/sstallion/dynamic_motd)  
 - **Custom banner text** displayed in a rotating set of fun figlet fonts (customizable!)
-- **Colorful output** with [`lolcat`](https://github.com/busyloop/lolcat)  
+- **Colorful output** with [`lolcat`](https://github.com/jaseg/lolcat)  
 - **System stats at a glance**:  
   - 🖥️ Hostname  
   - ⏱️ Uptime  
@@ -65,7 +65,7 @@ You can install this tool in **two easy ways**:
   - [`dynamic_motd`](https://github.com/sstallion/dynamic_motd)  
   - [`figlet`](https://github.com/freebsd/freebsd-ports/tree/main/misc/figlet) + [`figlet-fonts`](https://github.com/freebsd/freebsd-ports/tree/20237f32ca631de448160f3eeeff6f328a4866be/misc/figlet-fonts) [(www.figlet.org)](http://www.figlet.org)
   - [`curl`](https://github.com/curl/curl)  
-  - [`lolcat`](https://github.com/busyloop/lolcat)  
+  - [`lolcat`](https://github.com/jaseg/lolcat)  
 - Unicode support:  
   - Use a UTF-8 locale (e.g., en_US.UTF-8)  
   - Use a font with extended glyph support (recommended: [**Nerd Fonts**](https://github.com/ryanoasis/nerd-fonts))  
