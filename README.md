@@ -7,12 +7,15 @@
 This project is an **installer and setup helper** for the excellent [`dynamic_motd`](https://github.com/sstallion/dynamic_motd) project by [sstallion](https://github.com/sstallion).  
 It automates installation, configures fonts, adds live weather, and ensures you get a rich and dynamic login experience out of the box.  
 
+---
 <div align="center">
-  <img src=".github/images/screenshot1.png" width="80%" alt="Screenshot placeholder #1"/>
+  <img src=".github/screenshot1.png" width="80%" alt="Screenshot placeholder #1"/>
 </div>
 
+--- 
+
 <div align="center">
-  <img src=".github/images/screenshot2.png" width="80%" alt="Screenshot placeholder #2"/>
+  <img src=".github/screenshot2.png" width="80%" alt="Screenshot placeholder #2"/>
 </div> 
 
 ---
@@ -93,21 +96,19 @@ Not all terminals render fancy characters equally. If icons like `🧠` or `🌦
 
 ---
 
-## 🖼️ Example Output  
+## 🖼️ Example Output (without color because github filters it out!👎)
 
-```ansi
-[38;5;199m ___[38;5;163m_   [38;5;164m     [38;5;128m    [38;5;129m    [38;5;93m     [38;5;99m    [38;5;63m    [38;5;69m     [38;5;33m    [38;5;39m    [38;5;38m [0m
-[38;5;199m/\ [38;5;163m _`\ [38;5;164m    [38;5;128m    [38;5;129m     [38;5;93m    [38;5;99m    [38;5;63m     [38;5;69m    [38;5;33m     [38;5;39m    [38;5;38m [0m
-[38;5;199m\ \[38;5;163m,\L\[38;5;164m_\   [38;5;128m  __[38;5;129m   _[38;5;93m __  [38;5;99m __ [38;5;63m __ [38;5;69m    _[38;5;33m_   [38;5;39m_ __[38;5;38m  [0m
-[38;5;199m \/[38;5;163m_\__[38;5;164m \  [38;5;128m /'__[38;5;129m`\/\[38;5;93m`'__[38;5;99m\/\ \[38;5;63m/\ \[38;5;69m  /'[38;5;33m__`\/[38;5;39m\`'_[38;5;38m_\[0m
-[38;5;199m  [38;5;163m /\ [38;5;164m\L\ \[38;5;128m/\  [38;5;129m__/\[38;5;93m \ \/[38;5;99m \ \[38;5;63m \_/ [38;5;69m|/\ [38;5;33m __/[38;5;39m\ \ \[38;5;38m/ [0m
-[38;5;199m  [38;5;163m \ `[38;5;164m\___[38;5;128m_\ \_[38;5;129m___\[38;5;93m\ \_[38;5;99m\  \ [38;5;63m\___[38;5;69m/ \ [38;5;33m\____[38;5;39m\\ \[38;5;38m_\ [0m
-[38;5;199m [38;5;163m   \/[38;5;164m____[38;5;128m_/\/[38;5;129m____/[38;5;93m \/_[38;5;99m/   [38;5;63m\/__/[38;5;69m   \[38;5;33m/___[38;5;39m_/ \/[38;5;38m_/ [0m
-[38;5;199m [38;5;163m    [38;5;164m    [38;5;128m     [38;5;129m    [38;5;93m     [38;5;99m    [38;5;63m    [38;5;69m     [38;5;33m    [38;5;39m    [38;5;38m    [0m
-[38;5;163m     [38;5;164m    [38;5;128m    [38;5;129m     [38;5;93m    [38;5;99m    [38;5;63m     [38;5;69m    [38;5;33m    [38;5;39m     [38;5;38m    [0m
-[0m
-                                                
-Font used: rectangles
+```text
+ __  __          _____                          
+|  \/  |        / ____|                         
+| \  / |_   _  | (___   ___ _ ____   _____ _ __ 
+| |\/| | | | |  \___ \ / _ \ '__\ \ / / _ \ '__|
+| |  | | |_| |  ____) |  __/ |   \ V /  __/ |   
+|_|  |_|\__, | |_____/ \___|_|    \_/ \___|_|   
+         __/ |                                  
+        |___/                                   
+                                                              
+Font used: big
 ------------------------------------------------------------
  🖥️  Hostname : freebsd-testbox
  ⏱️  Uptime   : 3 days
@@ -148,7 +149,7 @@ Changes take effect **immediately** on the next login.
 
 ## 📜 License  
 
-This project is an **installer only** and is distributed under the **BSD 2-Clause License**, in line with the upstream [`dynamic_motd`](https://github.com/sstallion/dynamic_motd).  
+This project is an **installer and customizer only** and is distributed under the **BSD 2-Clause License**, in line with the upstream [`dynamic_motd`](https://github.com/sstallion/dynamic_motd).  
 See [LICENSE](LICENSE) for details.  
 
 All credit for the underlying MOTD functionality belongs to [sstallion](https://github.com/sstallion) and contributors to [`dynamic_motd`](https://github.com/sstallion/dynamic_motd).  
