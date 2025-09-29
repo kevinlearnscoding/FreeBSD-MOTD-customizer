@@ -43,7 +43,7 @@ You can install this tool in **two easy ways**:
 ### Option 1️⃣: Fetch and Run Installer Script Directly  
 
 ```sh
-# fetch -o - https://raw.githubusercontent.com/kevinlearnscoding/FreeBSD_dynamic_MOTD_installer/refs/heads/main/setupMOTDv2.sh | sh
+fetch -o - https://raw.githubusercontent.com/kevinlearnscoding/FreeBSD-MOTD-customizer/refs/heads/main/FreeBSD-MOTD-Customizer.sh | sh
 ```
 
 ---
@@ -51,9 +51,9 @@ You can install this tool in **two easy ways**:
 ### Option 2️⃣: Download, Inspect, and Run  
 
 ```sh
-# fetch -o installer.sh https://raw.githubusercontent.com/kevinlearnscoding/FreeBSD_dynamic_MOTD_installer/refs/heads/main/setupMOTDv2.sh
-# chmod +x installer.sh
-# ./installer.sh
+fetch -o installer.sh https://raw.githubusercontent.com/kevinlearnscoding/FreeBSD-MOTD-customizer/refs/heads/main/FreeBSD-MOTD-Customizer.sh
+chmod +x installer.sh
+./installer.sh
 ```
 
 ---
