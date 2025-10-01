@@ -9,13 +9,13 @@ It automates installation, configures fonts, displays live weather, and ensures 
 
 ---
 <div align="center">
-  <img src=".github/screenshot2.png" width="80%" alt="MOTD on a Dark Background"/>
+  <img src="Images/screenshot2.png" width="80%" alt="MOTD on a Dark Background"/>
 </div>
 
 --- 
 
 <div align="center">
-  <img src=".github/screenshot1.png" width="80%" alt="MOTD on a Light Background"/>
+  <img src="Images/screenshot1.png" width="80%" alt="MOTD on a Light Background"/>
 </div> 
 
 ---
