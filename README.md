@@ -4,18 +4,18 @@
 [![](https://img.shields.io/badge/Installer-Script-green.svg)](#installation) 
 [![](https://img.shields.io/github/license/kevinlearnscoding/FreeBSD_dynamic_MOTD_installer)](LICENSE)  
 
-This project is an **installer and setup helper** for the excellent [`dynamic_motd`](https://github.com/sstallion/dynamic_motd) project by [sstallion](https://github.com/sstallion).  
-It automates installation, configures fonts, adds live weather, and ensures you get a rich and dynamic login experience out of the box.  
+This project customizes your Message Of The Day at login to have a fun custom banner, some stats about your system, and the weather.
+It automates installation, configures fonts, displays live weather, and ensures you get a rich and dynamic login experience out of the box.  
 
 ---
 <div align="center">
-  <img src=".github/screenshot1.png" width="80%" alt="Screenshot placeholder #1"/>
+  <img src=".github/screenshot2.png" width="80%" alt="MOTD on a Dark Background"/>
 </div>
 
 --- 
 
 <div align="center">
-  <img src=".github/screenshot2.png" width="80%" alt="Screenshot placeholder #2"/>
+  <img src=".github/screenshot1.png" width="80%" alt="MOTD on a Light Background"/>
 </div> 
 
 ---
