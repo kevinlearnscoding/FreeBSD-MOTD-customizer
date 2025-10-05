@@ -174,27 +174,20 @@ for cmd in $REQUIRED_CMDS; do
 done
 
 # Check if pkg is bootstrapped properly
-## echo "Checking pkg bootstrap status..."
-if [ ! -f /usr/local/sbin/pkg ] && [ ! -f /usr/sbin/pkg ]; then
-    echo "The 'pkg' tool is not bootstrapped. Bootstrapping now..."
+echo "Checking pkg bootstrap status..."
+
+# Test if pkg works using -N flag (doesn't trigger bootstrap)
+if ! pkg -N >/dev/null 2>&1; then
+    echo "The 'pkg' tool needs to be bootstrapped. Bootstrapping now..."
     echo "This will download and install the pkg tool..."
-    # Use 'yes' to automatically answer the bootstrap prompt
-    echo "y" | /usr/sbin/pkg bootstrap
-    if [ $? -ne 0 ]; then
+    
+    # Bootstrap pkg with automatic yes
+    if ! ASSUME_ALWAYS_YES=YES /usr/sbin/pkg bootstrap -f; then
         echo "❌ Failed to bootstrap pkg. Exiting."
         exit 1
     fi
     echo "✅ pkg bootstrapped successfully"
 else
-    # Test if pkg works without triggering bootstrap prompt
-    if ! /usr/local/sbin/pkg version >/dev/null 2>&1 && ! /usr/sbin/pkg version >/dev/null 2>&1; then
-        echo "pkg appears to be installed but not working properly. Attempting to fix..."
-        echo "y" | /usr/sbin/pkg bootstrap
-        if [ $? -ne 0 ]; then
-            echo "❌ Failed to fix pkg. Exiting."
-            exit 1
-        fi
-    fi
     echo "✅ pkg is available"
 fi
 
