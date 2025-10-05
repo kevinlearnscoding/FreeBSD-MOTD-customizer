@@ -1,5 +1,17 @@
 #!/bin/sh
 
+############################# WELCOME ###########################
+# ============================ INTRO ============================
+# This script will prompt the user for input to set their banner text,
+# weather location, and temperature system unit. 
+# The user input is then hardcoded into the resulting script
+# that runs at every login, which generates a fresh MOTD file.
+# As of FreeBSD 13.2 MOTD was changed to be dynamic by default,
+# but not very customizable. This script aims to fix that.
+##################################################################
+
+# ===== START OF THE SCRIPT =====
+
 # Some error handling just to be safe 
 set -e
 error_exit() {
@@ -11,21 +23,126 @@ error_exit() {
 }
 trap 'error_exit' EXIT
 
-# ===== USER INPUT FOR BANNER TEXT =====
-echo "Enter your banner text: "
-read banner_text </dev/tty
+# Welcome message
+clear
+cat << EOF1
 
-# ===== USER INPUT FOR WEATHER =====
-echo "Enter your city name or 3-letter airport code (e.g. New York or JFK):"
-read city_input </dev/tty
+**********************************************************************
+============================= Welcome! ===============================
+This script will check for/install: 
+- dynamic_motd - to enable non-static MOTD messages
+- figlet and figlet-fonts - to create fun banners, which are then colored by
+- lolcat - a rainbow colorizer for text output
+- curl - to fetch the current weather from wttr.in
+We will then set up a few customizations such as a custom banner in a
+fun text effect, and also getting system stats and the current weather.
+This message displays at each login, even from SSH connections.
+To edit the out later, edit: /usr/local/etc/rc.motd
+Note:
+lolcat and emojis will not display properly if your terminal does not 
+support fonts with emojis and 24-bit "truecolor" sequences.
+If your lolcat colors do not display properly, you may need to 
+adjust the lolcat settings in the MOTD script later. 
+(try adding -x to force 16-color mode, or remove lolcat commands for plain text)
+**********************************************************************
 
-# Replace spaces with '+'
-city_url=$(echo "$city_input" | tr ' ' '+')
+Let's get started!
 
-# Prompt for units
+Press Enter to continue or Ctrl+C to exit the script. 
+EOF1
+read dummy < /dev/tty
+
+# ===== USER INPUT =====
+
+# =================== USER INPUT FOR BANNER TEXT ==================== 
+# DO NOT EDIT THIS SECTION!
+# TO EDIT YOUR BANNER TEXT RUN THE SCRIPT THEN EDIT AS PER INTRO ABOVE
+# ===================================================================
+
+clear
+cat << EOF2
+Your banner text is displayed at the top of your MOTD, and color will be added
+using lolcat (later).
+Your banner can be multi-line by including "\n" in the text where you want a
+line return to be inserted - do not insert a space before/after the "\n".
+Example: 'My new\nServer' in the "big" font will display as:
+ __  __                             
+|  \/  |                            
+| \  / |_   _   _ __   _____      __
+| |\/| | | | | | '_ \ / _ \ \ /\ / /
+| |  | | |_| | | | | |  __/\ V  V / 
+|_|  |_|\__, | |_| |_|\___| \_/\_/  
+         __/ |                      
+        |___/                       
+  _____                          
+ / ____|                         
+| (___   ___ _ ____   _____ _ __ 
+ \___ \ / _ \ '__\ \ / / _ \ '__|
+ ____) |  __/ |   \ V /  __/ |   
+|_____/ \___|_|    \_/ \___|_|   
+ 
+You can test fonts by running "figlet -f <fontname> 'Your Text Here'" outside
+of this script to see how it looks.
+Your banner text can be altered after installation by editing the MOTD file.
+[Press enter to continue]
+EOF2
+read dummy < /dev/tty
+clear
+
+enter_banner_text() {
+while true; do
+cat << EOF3 
+************************************
+Force line return: "\n"
+************************************
+Enter your banner text: 
+EOF3
+    read banner_text < /dev/tty
+
+    if [ -z "$banner_text" ]; then
+        echo "Banner text cannot be empty. Please enter banner text."
+        echo "Press Ctrl+C to exit script"
+    else
+        break
+    fi
+done
+}
+enter_banner_text
+
+# ================= USER INPUT FOR WEATHER LOCATION ================= 
+# DO NOT EDIT THIS SECTION!
+# TO EDIT YOUR WEATHER LOCATION RUN THE SCRIPT THEN EDIT AS PER INTRO ABOVE
+# ===================================================================
+clear
+cat << EOF4
+Your weather location is used to fetch the current weather conditions.
+Supported location types are:
+Type                  
+/paris                # city name (+ for spaces)
+/~Eiffel+tower        # any location (+ for spaces)
+/Москва               # Unicode name of any location in any language
+/JFK                  # airport code (3 letters)
+/@stackoverflow.com   # domain name
+/94107                # area codes
+/-78.46,106.79        # GPS coordinates
+to automatically detect your location type 'auto-locate' (with hyphen)
+or leave blank.
+NOTE: 
+auto-locate is unreliable, it is suggested to provide a location or region
+for best results.
+Please enter your location: 
+EOF4
+read city_input < /dev/tty
+
+if [ -z "$city_input" ] || [ "$(echo "$city_input" | tr '[:upper:]' '[:lower:]')" = "auto-locate" ]; then
+    city_url=""
+else
+    city_url=$(echo "$city_input" | tr ' ' '+')
+fi
+clear
 while true; do
     echo "Do you want the temperature in Fahrenheit or Celsius? (F/C)"
-    read unit </dev/tty
+    read unit < /dev/tty
     unit=$(echo "$unit" | tr '[:lower:]' '[:upper:]')
     if [ "$unit" = "F" ]; then
         unit_suffix="&u"
@@ -34,15 +151,122 @@ while true; do
         unit_suffix=""
         break
     else
+        echo ""
         echo "Invalid input. Please enter 'F' or 'C'."
     fi
 done
 
-# Final weather URL (without the full "curl" yet)
-weather_url="wttr.in/${city_url}?format=3${unit_suffix}"
+# DO NOT EDIT THIS LINE. TO CHANGE THE WEATHER LOCATION OR UNIT
+# RUN THE SCRIPT THEN EDIT /usr/local/etc/rc.motd
+weather_url="wttr.in/${city_url}?format=3${unit_suffix}" 
 
-# ===== CONTINUE WITH PACKAGE SETUP =====
-ASSUME_ALWAYS_YES=YES pkg install dynamic_motd figlet figlet-fonts curl lolcat 
+###### Package Installation Section ######
+
+# ===== Check if required commands are installed =====
+clear
+echo "Checking if required commands are installed..."
+REQUIRED_CMDS="figlet curl lolcat"
+MISSING=""
+for cmd in $REQUIRED_CMDS; do
+    if ! command -v $cmd >/dev/null 2>&1; then
+        MISSING="$MISSING $cmd"
+    fi
+done
+
+# Check if pkg is bootstrapped properly
+## echo "Checking pkg bootstrap status..."
+if [ ! -f /usr/local/sbin/pkg ] && [ ! -f /usr/sbin/pkg ]; then
+    echo "The 'pkg' tool is not bootstrapped. Bootstrapping now..."
+    echo "This will download and install the pkg tool..."
+    # Use 'yes' to automatically answer the bootstrap prompt
+    echo "y" | /usr/sbin/pkg bootstrap
+    if [ $? -ne 0 ]; then
+        echo "❌ Failed to bootstrap pkg. Exiting."
+        exit 1
+    fi
+    echo "✅ pkg bootstrapped successfully"
+else
+    # Test if pkg works without triggering bootstrap prompt
+    if ! /usr/local/sbin/pkg version >/dev/null 2>&1 && ! /usr/sbin/pkg version >/dev/null 2>&1; then
+        echo "pkg appears to be installed but not working properly. Attempting to fix..."
+        echo "y" | /usr/sbin/pkg bootstrap
+        if [ $? -ne 0 ]; then
+            echo "❌ Failed to fix pkg. Exiting."
+            exit 1
+        fi
+    fi
+    echo "✅ pkg is available"
+fi
+
+# Now check packages using pkg
+echo "Checking installed packages..."
+if ! pkg info -e dynamic_motd >/dev/null 2>&1; then 
+    MISSING="$MISSING dynamic_motd"
+fi
+
+if ! pkg info -e figlet-fonts >/dev/null 2>&1; then
+    MISSING="$MISSING figlet-fonts"
+fi
+
+MISSING=$(echo "$MISSING" | xargs)  # Remove extra spaces
+
+# ===== Tell user what packages are missing =====
+if [ -n "$MISSING" ]; then
+    clear
+    echo "Let's get started installing packages."
+    echo "The following required programs/packages are missing: $MISSING"
+    echo ""
+    echo "Install via: pkg install $MISSING ? [Y/n]"
+    read install_choice < /dev/tty
+    install_choice=${install_choice:-Y}  
+    install_choice=$(echo "$install_choice" | tr '[:lower:]' '[:upper:]')
+
+    if [ "$install_choice" = "Y" ]; then
+        if ASSUME_ALWAYS_YES=YES pkg install $MISSING; then
+            echo "✅ Packages installed successfully."
+            echo "Press Enter to continue."
+            read dummy < /dev/tty
+        else
+            echo "Some packages failed to install."
+            echo "Would you like to retry? [Y/n]: "
+            read retry < /dev/tty
+            retry=${retry:-Y}
+            retry=$(echo "$retry" | tr '[:lower:]' '[:upper:]')
+            if [ "$retry" = "Y" ]; then
+                ASSUME_ALWAYS_YES=YES pkg install $MISSING || { echo "Still failing. Exiting."; exit 1; }
+            else
+                echo "Exiting."
+                exit 1
+            fi
+        fi
+    else
+        echo "Cannot continue without required packages. Exiting."
+        exit 1
+    fi
+else
+    echo "✅ All required packages are already installed."
+    echo "Press Enter to continue."
+    read dummy < /dev/tty
+fi
+
+# ===== Make sure packages were installed correctly =====
+FINAL_MISSING=""
+for cmd in figlet curl lolcat; do
+    if ! command -v $cmd >/dev/null 2>&1; then
+        FINAL_MISSING="$FINAL_MISSING $cmd"
+    fi
+done
+
+if [ -n "$FINAL_MISSING" ]; then
+    echo ""
+    echo "❌ The following commands did not install properly: $FINAL_MISSING"
+    echo "Please manually install these packages and re-run the script."
+    echo "Press Enter to exit."
+    read dummy < /dev/tty
+    exit 1
+fi
+
+##### Enable dynamic_motd and create a backup of the old MOTD script #####
 
 sysrc update_motd="NO"
 sysrc dynamic_motd="YES"
@@ -51,6 +275,18 @@ mv /etc/motd.template /etc/motd.template.backup
 # ===== WRITE THE DYNAMIC MOTD SCRIPT =====
 cat << EOF > /usr/local/etc/rc.motd
 #!/bin/sh
+
+# ====== WELCOME! =====
+# Edit these lines to make adjustments:
+# Line      Adjustment
+# 15        Banner text
+# 16        List of fonts for banner - see figlet.org for more info
+# 25        Lolcat options - see "lolcat --help" for more options on coloring
+# 32        Divider character and length
+# 93        Banner style options - see 'figlet.org/figlet-man' for more info
+# 101-107   Emoji's used 
+
+# For weather reports adjustments see "wttr.in/:help" for more info
 
 # ===== Configuration =====
 NAME="$banner_text" #REPLACE WITH YOUR TEXT
@@ -73,27 +309,28 @@ divider() {
     printf "%s\n" "------------------------------------------------------------"
 }
 
-# ===== Font Rotation (POSIX-compliant) =====
+# ===== Random Font Selection (POSIX-compliant) =====
 set -- \$FONT_LIST  # Turns FONT_LIST into \$1 \$2 \$3 ...
 NUM_FONTS=\$#
-if [ -f "\$STATE_FILE" ]; then
-    INDEX=\$(cat "\$STATE_FILE")
+
+# Generate a random number between 0 and NUM_FONTS-1
+# Using /dev/urandom for better randomness
+if [ -r /dev/urandom ]; then
+    RANDOM_BYTE=\$(dd if=/dev/urandom bs=1 count=1 2>/dev/null | od -An -tu1 | tr -d ' ')
+    RANDOM_INDEX=\$((RANDOM_BYTE % NUM_FONTS))
 else
-    INDEX=0
+    # Fallback: use current time as seed for basic randomness
+    RANDOM_INDEX=\$((\$(date +%S) % NUM_FONTS))
 fi
 
-INDEX=\$((INDEX % NUM_FONTS))
-# Rotate font using shift
+# Select the font at the random index
 i=0
 for FONT in "\$@"; do
-    if [ "\$i" -eq "\$INDEX" ]; then
+    if [ "\$i" -eq "\$RANDOM_INDEX" ]; then
         break
     fi
     i=\$((i + 1))
 done
-
-NEXT_INDEX=\$(( (INDEX + 1) % NUM_FONTS ))
-echo "\$NEXT_INDEX" > "\$STATE_FILE"
 
 # ===== Memory Info (FreeBSD) =====
 get_mem_info() {
