@@ -25,10 +25,9 @@ error_exit() {
 }
 trap 'error_exit' EXIT
 
-# Welcome message
+# ===== Welcome message =====
 clear
 cat << EOF1
-
 **********************************************************************
 ============================= Welcome! ===============================
 This script will check for/install: 
@@ -268,20 +267,20 @@ sysrc dynamic_motd="YES"
 mv /etc/motd.template /etc/motd.template.backup
 
 # ===== WRITE THE DYNAMIC MOTD SCRIPT =====
-cat << EOF > /usr/local/etc/rc.motd
+cat << EOF5 > /usr/local/etc/rc.motd
 #!/bin/sh
 
 # ====== WELCOME! =====
 # Edit these lines to make adjustments:
 # Line      Adjustment
-# 15        Banner text
-# 16        List of fonts for banner - see figlet.org for more info
-# 25        Lolcat options - see "lolcat --help" for more options on coloring
-# 32        Divider character and length
-# 93        Banner style options - see 'figlet.org/figlet-man' for more info
-# 101-107   Emoji's used 
+# 16        Banner text
+# 17        List of fonts for banner - see figlet.org for more info
+# 26        Lolcat options - see "lolcat --help" for more options on coloring
+# 33        Divider character and length
+# 77        Banner style options - see 'figlet.org/figlet-man' for more info
+# 84 - 94   Emoji's used 
 
-# For weather reports adjustments see "wttr.in/:help" for more info
+# For weather report adjustments see "wttr.in/:help" for more info
 
 # ===== Configuration =====
 NAME="$banner_text" #REPLACE WITH YOUR TEXT
@@ -318,7 +317,7 @@ else
     RANDOM_INDEX=\$((\$(date +%S) % NUM_FONTS))
 fi
 
-# Select the font at the random index
+# Select the font at the random index for the banner
 i=0
 for FONT in "\$@"; do
     if [ "\$i" -eq "\$RANDOM_INDEX" ]; then
@@ -362,14 +361,13 @@ echo " 💽 Disk      : \$DISK"
 divider | colorize
 if has_cmd curl; then
     echo
-    echo " 🌦️  Weather:"
-    curl -s "\$WEATHER_URL" || echo " (unavailable)"
+    echo " 🌦️  Weather:" curl -s "\$WEATHER_URL" || echo " (unavailable)"
 fi
 
 echo
 divider | colorize
 echo
-EOF
+EOF5
 
 chmod +x /usr/local/etc/rc.motd
 service dynamic_motd start
